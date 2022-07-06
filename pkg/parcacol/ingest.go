@@ -108,15 +108,15 @@ func (ing Ingester) IngestProfile(ctx context.Context, ls labels.Labels, p *prof
 
 	buffer.Sort()
 
-	// This is necessary because sorting a buffer makes concurrent reading not
-	// safe as the internal pages are cyclically sorted at read time. Cloning
-	// executes the cyclic sort once and makes the resulting buffer safe for
-	// concurrent reading as it no longer has to perform the cyclic sorting at
-	// read time. This should probably be improved in the parquet library.
-	buffer, err = buffer.Clone()
-	if err != nil {
-		return err
-	}
+	// // This is necessary because sorting a buffer makes concurrent reading not
+	// // safe as the internal pages are cyclically sorted at read time. Cloning
+	// // executes the cyclic sort once and makes the resulting buffer safe for
+	// // concurrent reading as it no longer has to perform the cyclic sorting at
+	// // read time. This should probably be improved in the parquet library.
+	// buffer, err = buffer.Clone()
+	// if err != nil {
+	// 	return err
+	// }
 
 	_, err = ing.table.InsertBuffer(ctx, buffer)
 	if err != nil {
